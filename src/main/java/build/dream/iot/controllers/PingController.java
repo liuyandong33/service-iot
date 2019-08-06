@@ -15,4 +15,16 @@ public class PingController {
     public String ok() {
         return Constants.OK;
     }
+
+    @RequestMapping(value = "/success")
+    @ResponseBody
+    public String success() {
+        return Constants.SUCCESS;
+    }
+
+    @RequestMapping(value = "/pong")
+    @ResponseBody
+    public String pong() {
+        return Constants.PONG;
+    }
 }
