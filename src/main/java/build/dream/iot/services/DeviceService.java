@@ -64,6 +64,7 @@ public class DeviceService {
     public ApiRest saveDevice(SaveDeviceModel saveDeviceModel) {
         BigInteger tenantId = saveDeviceModel.obtainTenantId();
         BigInteger branchId = saveDeviceModel.obtainBranchId();
+        BigInteger userId = saveDeviceModel.obtainUserId();
         BigInteger id = saveDeviceModel.getId();
         String name = saveDeviceModel.getName();
         String code = saveDeviceModel.getCode();
@@ -78,8 +79,21 @@ public class DeviceService {
                     .build();
             device = DatabaseHelper.find(Device.class, searchModel);
             ValidateUtils.notNull(device, "设备不存在！");
-        } else {
 
+            device.setName(name);
+            device.setCode(code);
+            device.setType(type);
+            device.setUpdatedUserId(userId);
+            DatabaseHelper.update(device);
+        } else {
+            device = Device.builder()
+                    .name(name)
+                    .code(code)
+                    .type(type)
+                    .createdUserId(userId)
+                    .updatedUserId(userId)
+                    .build();
+            DatabaseHelper.insert(device);
         }
 
         return ApiRest.builder().data(device).message("保存设备成功！").successful(true).build();

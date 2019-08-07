@@ -1,6 +1,7 @@
 package build.dream.iot.models.device;
 
 import build.dream.common.models.IotBasicModel;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
@@ -9,9 +10,11 @@ public class SaveDeviceModel extends IotBasicModel {
     private BigInteger id;
 
     @NotNull
+    @Length(max = 20)
     private String name;
 
     @NotNull
+    @Length(max = 50)
     private String code;
 
     @NotNull
