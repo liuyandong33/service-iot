@@ -1,17 +1,14 @@
-package build.dream.iot.models.device;
+package build.dream.iot.models.user;
 
-import build.dream.common.models.IotBasicModel;
+import build.dream.common.models.CateringBasicModel;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class ListDevicesModel extends IotBasicModel {
+public class ListUsersModel extends CateringBasicModel {
     @NotNull
-    @Min(value = 1)
     private Integer page;
 
     @NotNull
-    @Min(value = 1)
     private Integer rows;
 
     public Integer getPage() {

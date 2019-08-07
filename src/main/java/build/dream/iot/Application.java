@@ -12,7 +12,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
 @EnableKafka
-@MapperScan(basePackages = {"build.dream.common.mappers", "build.dream.catering.mappers"})
+@MapperScan(basePackages = {"build.dream.common.mappers", "build.dream.iot.mappers"})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
