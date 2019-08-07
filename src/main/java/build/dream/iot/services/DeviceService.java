@@ -2,23 +2,24 @@ package build.dream.iot.services;
 
 import build.dream.common.api.ApiRest;
 import build.dream.common.iot.domains.Device;
-import build.dream.common.utils.DatabaseHelper;
-import build.dream.common.utils.PagedSearchModel;
-import build.dream.common.utils.SearchCondition;
-import build.dream.common.utils.SearchModel;
+import build.dream.common.utils.*;
 import build.dream.iot.constants.Constants;
 import build.dream.iot.models.device.ListDevicesModel;
+import build.dream.iot.models.device.SaveDeviceModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class DeviceService {
+    /**
+     * 分页查询设备
+     *
+     * @param listDevicesModel
+     * @return
+     */
     @Transactional(readOnly = true)
     public ApiRest listDevices(ListDevicesModel listDevicesModel) {
         BigInteger tenantId = listDevicesModel.obtainTenantId();
@@ -51,5 +52,36 @@ public class DeviceService {
         data.put("total", count);
         data.put("rows", devices);
         return ApiRest.builder().data(data).message("查询设备成功！").successful(true).build();
+    }
+
+    /**
+     * 保存设备
+     *
+     * @param saveDeviceModel
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ApiRest saveDevice(SaveDeviceModel saveDeviceModel) {
+        BigInteger tenantId = saveDeviceModel.obtainTenantId();
+        BigInteger branchId = saveDeviceModel.obtainBranchId();
+        BigInteger id = saveDeviceModel.getId();
+        String name = saveDeviceModel.getName();
+        String code = saveDeviceModel.getCode();
+        int type = saveDeviceModel.getType();
+
+        Device device = null;
+        if (Objects.nonNull(id)) {
+            SearchModel searchModel = SearchModel.builder()
+                    .equal(Device.ColumnName.TENANT_ID, tenantId)
+                    .equal(Device.ColumnName.BRANCH_ID, branchId)
+                    .equal(Device.ColumnName.ID, id)
+                    .build();
+            device = DatabaseHelper.find(Device.class, searchModel);
+            ValidateUtils.notNull(device, "设备不存在！");
+        } else {
+
+        }
+
+        return ApiRest.builder().data(device).message("保存设备成功！").successful(true).build();
     }
 }
