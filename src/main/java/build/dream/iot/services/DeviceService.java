@@ -4,6 +4,7 @@ import build.dream.common.api.ApiRest;
 import build.dream.common.iot.domains.Device;
 import build.dream.common.utils.*;
 import build.dream.iot.constants.Constants;
+import build.dream.iot.models.device.DeleteDeviceModel;
 import build.dream.iot.models.device.ListDevicesModel;
 import build.dream.iot.models.device.SaveDeviceModel;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,7 @@ public class DeviceService {
     @Transactional(rollbackFor = Exception.class)
     public ApiRest saveDevice(SaveDeviceModel saveDeviceModel) {
         BigInteger tenantId = saveDeviceModel.obtainTenantId();
+        String tenantCode = saveDeviceModel.obtainTenantCode();
         BigInteger branchId = saveDeviceModel.obtainBranchId();
         BigInteger userId = saveDeviceModel.obtainUserId();
         BigInteger id = saveDeviceModel.getId();
@@ -87,6 +89,9 @@ public class DeviceService {
             DatabaseHelper.update(device);
         } else {
             device = Device.builder()
+                    .tenantId(tenantId)
+                    .tenantCode(tenantCode)
+                    .branchId(branchId)
                     .name(name)
                     .code(code)
                     .type(type)
@@ -97,5 +102,35 @@ public class DeviceService {
         }
 
         return ApiRest.builder().data(device).message("保存设备成功！").successful(true).build();
+    }
+
+    /**
+     * 删除设备
+     *
+     * @param deleteDeviceModel
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ApiRest deleteDevice(DeleteDeviceModel deleteDeviceModel) {
+        BigInteger tenantId = deleteDeviceModel.obtainTenantId();
+        BigInteger branchId = deleteDeviceModel.obtainBranchId();
+        BigInteger userId = deleteDeviceModel.obtainUserId();
+        BigInteger deviceId = deleteDeviceModel.getDeviceId();
+
+        SearchModel searchModel = SearchModel.builder()
+                .equal(Device.ColumnName.TENANT_ID, tenantId)
+                .equal(Device.ColumnName.BRANCH_ID, branchId)
+                .equal(Device.ColumnName.ID, deviceId)
+                .build();
+
+        Device device = DatabaseHelper.find(Device.class, searchModel);
+        ValidateUtils.notNull(device, "设备不存在！");
+
+        device.setUpdatedUserId(userId);
+        device.setUpdatedRemark("删除设备！");
+        device.setDeletedTime(new Date());
+        device.setDeleted(true);
+        DatabaseHelper.update(device);
+        return ApiRest.builder().message("删除设备成功！").successful(true).build();
     }
 }

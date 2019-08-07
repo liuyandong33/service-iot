@@ -1,6 +1,7 @@
 package build.dream.iot.controllers;
 
 import build.dream.common.annotations.ApiRestAction;
+import build.dream.iot.models.device.DeleteDeviceModel;
 import build.dream.iot.models.device.ListDevicesModel;
 import build.dream.iot.models.device.SaveDeviceModel;
 import build.dream.iot.services.DeviceService;
@@ -32,6 +33,18 @@ public class DeviceController {
     @ResponseBody
     @ApiRestAction(modelClass = SaveDeviceModel.class, serviceClass = DeviceService.class, serviceMethodName = "saveDevice", error = "保存设备失败")
     public String saveDevice() {
+        return null;
+    }
+
+    /**
+     * 删除设备
+     *
+     * @return
+     */
+    @RequestMapping(value = "/deleteDevice")
+    @ResponseBody
+    @ApiRestAction(modelClass = DeleteDeviceModel.class, serviceClass = DeviceService.class, serviceMethodName = "deleteDevice", error = "删除设备失败")
+    public String deleteDevice() {
         return null;
     }
 }
