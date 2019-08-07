@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DeviceController {
     @RequestMapping(value = "/listDevices")
     @ResponseBody
-    @ApiRestAction(modelClass = ListDevicesModel.class, serviceClass = DeviceService.class, serviceMethodName = "listDevices", error = "查询设备成功")
+    @ApiRestAction(modelClass = ListDevicesModel.class, serviceClass = DeviceService.class, serviceMethodName = "listDevices", error = "查询设备失败")
     public String listDevices() {
         return null;
     }
