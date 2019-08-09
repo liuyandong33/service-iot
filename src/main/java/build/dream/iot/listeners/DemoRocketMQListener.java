@@ -5,7 +5,7 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@RocketMQMessageListener(topic = "GID_ze1_iot", consumerGroup = "GID_ze1_iot")
+@RocketMQMessageListener(topic = "_test_rocket_mq", consumerGroup = "GID_test")
 public class DemoRocketMQListener implements RocketMQListener<String> {
     @Override
     public void onMessage(String message) {
