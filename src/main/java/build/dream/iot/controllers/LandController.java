@@ -24,7 +24,7 @@ public class LandController {
     @ResponseBody
     public String test() {
         Message<String> message = new GenericMessage<String>(UUID.randomUUID().toString());
-        SendResult sendResult = rocketMQTemplate.syncSend("_test_rocket_mq", message, 30000, 30000);
+        SendResult sendResult = rocketMQTemplate.syncSend("delay_operate_rocket_mq_topic", message, 30000, 30000);
         return Constants.SUCCESS;
     }
 }
