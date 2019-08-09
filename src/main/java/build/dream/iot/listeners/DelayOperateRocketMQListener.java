@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-@RocketMQMessageListener(topic = "delay_operate_rocket_mq_topic", consumerGroup = "GID_delay_operate")
+@RocketMQMessageListener(topic = "${delayed.or.timed.rocket.mq.topic}", consumerGroup = "${rocketmq.consumer.group}")
 public class DelayOperateRocketMQListener implements RocketMQListener<String> {
     @Override
     public void onMessage(String message) {
