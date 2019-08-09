@@ -1,6 +1,8 @@
 package build.dream.iot.controllers;
 
 import build.dream.common.annotations.PermitAll;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -8,8 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(value = "/land")
 public class LandController {
-    @RequestMapping(value = "/upload")
-    public String upload() {
+    @Autowired
+    private RocketMQTemplate rocketMQTemplate;
+
+    @RequestMapping(value = "/test")
+    public String test() {
+        rocketMQTemplate.syncSend("_test_rocket_mq", "Hello, World!");
         return "ping/upload";
     }
 }
