@@ -1,10 +1,10 @@
 package build.dream.iot.models.user;
 
-import build.dream.common.models.CateringBasicModel;
+import build.dream.common.models.IotBasicModel;
 
 import javax.validation.constraints.NotNull;
 
-public class ListUsersModel extends CateringBasicModel {
+public class ListUsersModel extends IotBasicModel {
     @NotNull
     private Integer page;
 

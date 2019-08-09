@@ -1,11 +1,11 @@
 package build.dream.iot.models.user;
 
-import build.dream.common.models.CateringBasicModel;
+import build.dream.common.models.IotBasicModel;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
-public class AddUserModel extends CateringBasicModel {
+public class AddUserModel extends IotBasicModel {
     @NotNull
     BigInteger branchId;
 

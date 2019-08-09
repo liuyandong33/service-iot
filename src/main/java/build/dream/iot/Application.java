@@ -28,12 +28,8 @@ import java.util.stream.Collectors;
 @EnableKafka
 @MapperScan(basePackages = {"build.dream.common.mappers", "build.dream.iot.mappers"})
 public class Application {
-    public static void main(String[] args) throws IOException, InvalidFormatException {
-//        SpringApplication.run(Application.class, args);
-
-        args = new String[1];
-        args[0] = "C:\\Users\\liuyandong\\Desktop\\沈阳土地.xlsx";
-        aa(args);
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 
     public static void aa(String[] args) throws IOException, InvalidFormatException {
