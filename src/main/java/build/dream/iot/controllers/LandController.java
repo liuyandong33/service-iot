@@ -1,6 +1,7 @@
 package build.dream.iot.controllers;
 
 import build.dream.common.annotations.PermitAll;
+import build.dream.common.utils.ConfigurationUtils;
 import build.dream.iot.constants.Constants;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -23,8 +24,9 @@ public class LandController {
     @RequestMapping(value = "/test")
     @ResponseBody
     public String test() {
+        String topic = ConfigurationUtils.getConfiguration("delayed.or.timed.rocket.mq.topic");
         Message<String> message = new GenericMessage<String>(UUID.randomUUID().toString());
-        SendResult sendResult = rocketMQTemplate.syncSend("delay_operate_rocket_mq_topic", message, 30000, 30000);
+        SendResult sendResult = rocketMQTemplate.syncSend(topic, message, 30000, 30000);
         return Constants.SUCCESS;
     }
 }
