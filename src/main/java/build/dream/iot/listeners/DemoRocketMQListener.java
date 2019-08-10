@@ -1,3 +1,4 @@
+/*
 package build.dream.iot.listeners;
 
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -12,3 +13,4 @@ public class DemoRocketMQListener implements RocketMQListener<String> {
         System.out.println(message);
     }
 }
+*/
