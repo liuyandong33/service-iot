@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import java.util.Collection;
 import java.util.Properties;
 
 @Configuration
@@ -30,21 +31,12 @@ public class RocketMQConsumerConfiguration {
         properties.put(PropertyKeyConst.GROUP_ID, rocketMQProperties.getGroupId());
         Consumer consumer = ONSFactory.createConsumer(properties);
 
-        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-        for (String beanDefinitionName : beanDefinitionNames) {
-            Object bean = applicationContext.getBean(beanDefinitionName);
-            if (bean instanceof MessageListener) {
-                MessageListener messageListener = (MessageListener) bean;
-                subscribe(consumer, messageListener);
-            }
+        Collection<MessageListener> messageListeners = applicationContext.getBeansOfType(MessageListener.class).values();
+        for (MessageListener messageListener : messageListeners) {
+            RocketMQMessageListener rocketMQMessageListener = AnnotationUtils.findAnnotation(messageListener.getClass(), RocketMQMessageListener.class);
+            consumer.subscribe(rocketMQMessageListener.topic(), rocketMQMessageListener.subExpression(), messageListener);
         }
-
         consumer.start();
         return consumer;
-    }
-
-    private void subscribe(Consumer consumer, MessageListener messageListener) {
-        RocketMQMessageListener rocketMQMessageListener = AnnotationUtils.findAnnotation(messageListener.getClass(), RocketMQMessageListener.class);
-        consumer.subscribe(rocketMQMessageListener.topic(), rocketMQMessageListener.subExpression(), messageListener);
     }
 }
