@@ -1,9 +1,6 @@
 package build.dream.iot.configurations;
 
 import build.dream.common.annotations.RocketMQMessageListener;
-import build.dream.common.tuples.Tuple2;
-import build.dream.common.utils.TupleUtils;
-import build.dream.iot.listeners.DelayedOrTimedRocketMQListener;
 import build.dream.iot.rocketmq.RocketMQProperties;
 import com.aliyun.openservices.ons.api.Consumer;
 import com.aliyun.openservices.ons.api.MessageListener;
@@ -14,14 +11,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 @Configuration
 public class RocketMQConsumerConfiguration {
     @Autowired
     private RocketMQProperties rocketMQProperties;
-    @Autowired
-    private DelayedOrTimedRocketMQListener delayedOrTimedRocketMQListener;
+    private static List<MessageListener> messageListeners = new ArrayList<MessageListener>();
+
+    public static void addMessageListener(MessageListener messageListener) {
+        messageListeners.add(messageListener);
+    }
 
     @Bean
     public Consumer consumer() {
@@ -32,20 +34,16 @@ public class RocketMQConsumerConfiguration {
         properties.put(PropertyKeyConst.GROUP_ID, rocketMQProperties.getGroupId());
         Consumer consumer = ONSFactory.createConsumer(properties);
 
-        // 开始订阅消息
-        subscribe(consumer, delayedOrTimedRocketMQListener);
+        for (MessageListener messageListener : messageListeners) {
+            subscribe(consumer, messageListener);
+        }
 
         consumer.start();
         return consumer;
     }
 
     private void subscribe(Consumer consumer, MessageListener messageListener) {
-        Tuple2<String, String> tuple2 = obtainTopicAndSubExpression(messageListener.getClass());
-        consumer.subscribe(tuple2._1(), tuple2._2(), messageListener);
-    }
-
-    private Tuple2<String, String> obtainTopicAndSubExpression(Class<? extends MessageListener> clazz) {
-        RocketMQMessageListener rocketMQMessageListener = AnnotationUtils.findAnnotation(clazz, RocketMQMessageListener.class);
-        return TupleUtils.buildTuple2(rocketMQMessageListener.topic(), rocketMQMessageListener.subExpression());
+        RocketMQMessageListener rocketMQMessageListener = AnnotationUtils.findAnnotation(messageListener.getClass(), RocketMQMessageListener.class);
+        consumer.subscribe(rocketMQMessageListener.topic(), rocketMQMessageListener.subExpression(), messageListener);
     }
 }
