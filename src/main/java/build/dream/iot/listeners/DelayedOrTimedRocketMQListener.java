@@ -1,6 +1,8 @@
 package build.dream.iot.listeners;
 
 import build.dream.common.annotations.RocketMQMessageListener;
+import build.dream.common.utils.LogUtils;
+import build.dream.iot.constants.Constants;
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
@@ -12,7 +14,8 @@ import org.springframework.stereotype.Component;
 public class DelayedOrTimedRocketMQListener implements MessageListener {
     @Override
     public Action consume(Message message, ConsumeContext context) {
-        System.out.println(message);
+        String body = new String(message.getBody(), Constants.CHARSET_UTF_8);
+        LogUtils.info(body);
         return Action.CommitMessage;
     }
 }
