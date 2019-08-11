@@ -7,23 +7,19 @@ import com.aliyun.openservices.ons.api.MessageListener;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 @Configuration
 public class RocketMQConsumerConfiguration {
     @Autowired
+    private ApplicationContext applicationContext;
+    @Autowired
     private RocketMQProperties rocketMQProperties;
-    private static List<MessageListener> messageListeners = new ArrayList<MessageListener>();
-
-    public static void addMessageListener(MessageListener messageListener) {
-        messageListeners.add(messageListener);
-    }
 
     @Bean
     public Consumer consumer() {
@@ -34,8 +30,13 @@ public class RocketMQConsumerConfiguration {
         properties.put(PropertyKeyConst.GROUP_ID, rocketMQProperties.getGroupId());
         Consumer consumer = ONSFactory.createConsumer(properties);
 
-        for (MessageListener messageListener : messageListeners) {
-            subscribe(consumer, messageListener);
+        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            Object bean = applicationContext.getBean(beanDefinitionName);
+            if (bean instanceof MessageListener) {
+                MessageListener messageListener = (MessageListener) bean;
+                subscribe(consumer, messageListener);
+            }
         }
 
         consumer.start();
