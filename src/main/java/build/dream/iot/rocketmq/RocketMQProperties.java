@@ -1,10 +1,7 @@
 package build.dream.iot.rocketmq;
 
-import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import java.util.Properties;
 
 @Component
 @ConfigurationProperties(prefix = "rocketmq")
@@ -12,7 +9,8 @@ public class RocketMQProperties {
     private String accessKey;
     private String secretKey;
     private String nameSrvAddr;
-    private String groupId;
+    private String producerGroupId;
+    private String consumerGroupId;
 
     public String getAccessKey() {
         return accessKey;
@@ -38,11 +36,19 @@ public class RocketMQProperties {
         this.nameSrvAddr = nameSrvAddr;
     }
 
-    public String getGroupId() {
-        return groupId;
+    public String getProducerGroupId() {
+        return producerGroupId;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public void setProducerGroupId(String producerGroupId) {
+        this.producerGroupId = producerGroupId;
+    }
+
+    public String getConsumerGroupId() {
+        return consumerGroupId;
+    }
+
+    public void setConsumerGroupId(String consumerGroupId) {
+        this.consumerGroupId = consumerGroupId;
     }
 }

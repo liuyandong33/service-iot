@@ -20,7 +20,7 @@ public class RocketMQProducerConfiguration {
         properties.setProperty(PropertyKeyConst.AccessKey, rocketMQProperties.getAccessKey());
         properties.setProperty(PropertyKeyConst.SecretKey, rocketMQProperties.getSecretKey());
         properties.setProperty(PropertyKeyConst.NAMESRV_ADDR, rocketMQProperties.getNameSrvAddr());
-        properties.setProperty(PropertyKeyConst.GROUP_ID, rocketMQProperties.getGroupId());
+        properties.setProperty(PropertyKeyConst.GROUP_ID, rocketMQProperties.getProducerGroupId());
         ProducerBean producerBean = new ProducerBean();
         producerBean.setProperties(properties);
         return producerBean;
