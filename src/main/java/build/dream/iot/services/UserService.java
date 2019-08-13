@@ -1,9 +1,9 @@
 package build.dream.iot.services;
 
 import build.dream.common.api.ApiRest;
-import build.dream.common.iot.domains.Branch;
-import build.dream.common.saas.domains.SystemUser;
-import build.dream.common.saas.domains.Tenant;
+import build.dream.common.domains.iot.Branch;
+import build.dream.common.domains.saas.SystemUser;
+import build.dream.common.domains.saas.Tenant;
 import build.dream.common.utils.*;
 import build.dream.iot.constants.Constants;
 import build.dream.iot.mappers.BranchMapper;

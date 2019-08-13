@@ -1,7 +1,7 @@
 package build.dream.iot.services;
 
 import build.dream.common.api.ApiRest;
-import build.dream.common.iot.domains.Device;
+import build.dream.common.domains.iot.Device;
 import build.dream.common.utils.*;
 import build.dream.iot.constants.Constants;
 import build.dream.iot.models.device.DeleteDeviceModel;

@@ -1,6 +1,6 @@
 package build.dream.iot.mappers;
 
-import build.dream.common.iot.domains.Branch;
+import build.dream.common.domains.iot.Branch;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
