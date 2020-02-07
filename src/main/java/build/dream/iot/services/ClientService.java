@@ -15,6 +15,11 @@ import java.util.UUID;
 
 @Service
 public class ClientService {
+    /**
+     *
+     * @param obtainDeviceInfoModel
+     * @return
+     */
     @Transactional(readOnly = true)
     public ApiRest obtainDeviceInfo(ObtainDeviceInfoModel obtainDeviceInfoModel) {
         String deviceCode = obtainDeviceInfoModel.getDeviceCode();
