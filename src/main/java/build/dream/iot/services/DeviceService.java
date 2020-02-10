@@ -88,6 +88,20 @@ public class DeviceService {
             device.setUpdatedUserId(userId);
             DatabaseHelper.update(device);
         } else {
+            String clientId = UUID.randomUUID().toString().replace("-", "");
+            String clientSecret = UUID.randomUUID().toString().replace("-", "");
+            Map<String, String> saveOauthClientDetailRequestParameters = new HashMap<String, String>();
+            saveOauthClientDetailRequestParameters.put("clientId", clientId);
+            saveOauthClientDetailRequestParameters.put("clientSecret", clientSecret);
+            saveOauthClientDetailRequestParameters.put("resourceIds", "device-api");
+            saveOauthClientDetailRequestParameters.put("scope", "all");
+            saveOauthClientDetailRequestParameters.put("authorizedGrantTypes", "client_credentials");
+            saveOauthClientDetailRequestParameters.put("accessTokenValidity", "2592000");
+            saveOauthClientDetailRequestParameters.put("refreshTokenValidity", "2592000");
+            saveOauthClientDetailRequestParameters.put("userId", userId.toString());
+            ApiRest saveOauthClientDetailResult = ProxyUtils.doPostWithRequestParameters(Constants.SERVICE_NAME_PLATFORM, "oauthClientDetail", "saveOauthClientDetail", saveOauthClientDetailRequestParameters);
+            ValidateUtils.isTrue(saveOauthClientDetailResult.isSuccessful(), saveOauthClientDetailResult.getError());
+
             device = Device.builder()
                     .tenantId(tenantId)
                     .tenantCode(tenantCode)
